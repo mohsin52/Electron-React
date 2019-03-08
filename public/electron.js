@@ -34,17 +34,21 @@ EventHubClient.createFromIotHubConnectionString(connectionString).then(function 
     }).catch(printError);
 
 var printMessage = function (message) {
-  mainWindow.webContents.send('new_data',{ body : message.body , type : message.applicationProperties.reqtype ,from :'with' });
-  //mainWindow.send('new_data',{ body : message.body , type : message.applicationProperties.reqtype  });
+  //mainWindow.webContents.send('new_data',{ body : message.body , type : message.applicationProperties.reqtype ,from :'with' });
+  mainWindow.send('new_data',{ body : message.body , type : message.applicationProperties.reqtype  });
 };
 //#endregion
 
 function createWindow() {
   mainWindow = new BrowserWindow( {width: 900, height: 680});
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
-  mainWindow.setFullScreen(true);
+  //mainWindow.setFullScreen(true);
   mainWindow.isMenuBarVisible(false);
-  mainWindow.on('closed', () => mainWindow = null);
+  mainWindow.on('closed', () => { 
+            mainWindow.localStorage.clear()
+            mainWindow = null,
+            window.localStorage.clear()
+ });
 }
 
 app.on('ready', createWindow);

@@ -6,6 +6,11 @@ export class Cart extends Component {
   static propTypes = {
   }
 
+  componentDidMount(){
+    if(!this.props.session){
+      window.location.href = '/handShake'
+    }
+  }
   render() {
     return (
       <div>
@@ -18,7 +23,7 @@ export class Cart extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  
+  session : state.session.active
 })
 
 const mapDispatchToProps = {
