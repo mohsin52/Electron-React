@@ -5,7 +5,7 @@ import QrReader from 'react-qr-reader'
 import { QRCode } from "react-qr-svg";
 import { enable_Navigation ,
          disable_Navigation } from '../../actions/navigationActions'
-import {auth_Machine} from '../../actions/handShakeActions'
+import {auth_Machine , get_user_data } from '../../actions/handShakeActions'
 
 // eslint-disable-next-line
 import { Paper , Dialog , Grid , Typography } from '@material-ui/core'
@@ -18,8 +18,10 @@ export class HandShake extends Component {
   handleScan = data => {
     if (data) {
       this.setState({
-        result: data
+        result: data,
+        delay : 60000
       })
+      this.props.get_user_data({ value : data }) 
     }
   }
 
@@ -30,21 +32,31 @@ export class HandShake extends Component {
   constructor(props){
       super(props);
       this.state = {
-        result : 'No data' 
+        result : null,
+        delay : 3000
       }
   }
 
   componentDidMount(){
     this.props.auth_Machine(this.props.kioskUrl);
     this.props.disable_Navigation()
+    
+  }
+  componentDidUpdate(){
+    
   }
   componentWillUnmount(){
     this.props.enable_Navigation()
   }
 
   render() {
+    
     return (
       <Fragment  >
+        {
+          (this.props.user)?(this.props.history.push('/home'))
+            :(console.log('no user still'))
+        } 
         <Paper style={{textAlign:'center', width:"100%" , height :"100%"}} >
         {
           //#region  QRCode 
@@ -52,7 +64,8 @@ export class HandShake extends Component {
           <Fragment>
              <Typography variant='headline'>Please show your QR Code To Machine</Typography>
               <QrReader
-                delay={300}
+                delay={this.state.delay}
+                
                 onError = {this.HandleError}
                 onScan={this.handleScan}
                 style={{ width: '300px' , height :'300px' , margin : '0 auto' }}
@@ -87,13 +100,15 @@ export class HandShake extends Component {
 const mapStateToProps = (state) => ({
   session : (state.session) ? state.session.active : false,
   kioskUrl : (state.session) ? (state.session.kioskUrl) : 'Infosys Kiosk Machine',
-  digitalSign : (state.session) ? (state.session.digitalSign) : 'empty'
+  digitalSign : (state.session) ? (state.session.digitalSign) : 'empty',
+  user : (state.session.user) ? (state.session.user) : null
 })
 
 const mapDispatchToProps = {
   enable_Navigation ,
   disable_Navigation ,
-  auth_Machine
+  auth_Machine,
+  get_user_data
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HandShake)

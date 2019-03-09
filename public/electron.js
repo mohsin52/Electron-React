@@ -45,9 +45,8 @@ function createWindow() {
   //mainWindow.setFullScreen(true);
   mainWindow.isMenuBarVisible(false);
   mainWindow.on('closed', () => { 
-            mainWindow.localStorage.clear()
-            mainWindow = null,
-            window.localStorage.clear()
+            mainWindow = null;
+           
  });
 }
 

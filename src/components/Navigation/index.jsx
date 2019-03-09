@@ -3,11 +3,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { set_Active_Tab  } from '../../actions/navigationActions'
 import { AppBar , Tabs , Tab, Typography} from '@material-ui/core'
-import {logout_user} from '../../actions/handShakeActions'
-import { createBrowserHistory } from 'history'
+import {logout_user , get_user_data} from '../../actions/handShakeActions'
 
-
-const history = createBrowserHistory()
 
 export class Navigation extends Component {
   static propTypes = {
@@ -22,6 +19,9 @@ export class Navigation extends Component {
   handleActive(num,path){
     this.props.set_Active_Tab(num)
     if(path === '/logout'){
+      this.props.logout_user()
+      this.props.get_user_data(null)
+
     }
     window.location.href = path;
   }
@@ -55,7 +55,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   set_Active_Tab,
-  logout_user
+  logout_user,
+  get_user_data
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation)

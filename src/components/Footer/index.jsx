@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 //import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {  login_user } from '../../actions/handShakeActions'
+import { load_Race } from '../../actions/raceActions'
 
 const electron = window.require('electron');
 // eslint-disable-next-line
@@ -25,11 +26,12 @@ export class Footer extends Component {
     ipcRenderer.removeListener('new_data',this.handleNewData);
   }
   handleNewData(event,data){
+    console.log(data)
     if(data){
       if(data.type === 'raceresults'){
-
+        this.props.load_Race(data.body.id)
       }
-      else if(data.type === 'sessionstatus' && data.body.kioskId === this.props.kisokId){
+      else if(data.type === 'sessionstatus'){
         this.props.login_user(data.body.isActive)
       }
       else {
@@ -53,7 +55,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  login_user
+  login_user,
+  load_Race
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Footer)
