@@ -5,6 +5,7 @@ import Home from '../components/Home';
 import Cart from '../components/Cart'
 import HandShake from '../components/HandShake'
 import Race from '../components/Race'
+import Payment from '../components/Payment'
 
 export default function Routes() {
   
@@ -16,6 +17,7 @@ export default function Routes() {
                 <Route path="/home" component = {Home} />
                 <Route path='/race' component={Race} />
                 <Route path="/handshake" component= {HandShake} />
+                <Route path='/payment' component={Payment} />
                 <Route path="**" component={HandShake} />
             </Switch> 
           </BrowserRouter>

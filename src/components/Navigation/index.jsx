@@ -21,7 +21,9 @@ export class Navigation extends Component {
     if(path === '/logout'){
       this.props.logout_user()
       this.props.get_user_data(null)
-
+    }
+    if(path ==='/back'){
+      window.history.back();
     }
     window.location.href = path;
   }
@@ -37,6 +39,7 @@ export class Navigation extends Component {
               <Tab label="Home" onClick={()=> { this.handleActive(0,'/home');}} />
               <Tab label={'Cart'}  onClick={() => {this.handleActive(1 ,'/cart');}} />
               <Tab label="Logout" onClick={()=>{this.handleActive(2 ,'/logout'); }} />
+              <Tab label="Back" onClick={()=> { this.handleActive(0,'/back');}} />
             </Tabs>
             </AppBar>  )
           :
